@@ -1,0 +1,25 @@
+{
+  "name": "LootBot",
+  "version": "1.0.0",
+  "description": "A discord.js bot to distribute wealth and loot!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluegill215/LootBot.git"
+  },
+  "author": "Steven Fisher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluegill215/LootBot/issues"
+  },
+  "homepage": "https://github.com/bluegill215/LootBot#readme",
+  "dependencies": {
+    "discord.js": "11.3.2",
+    "enmap": "2.6.3",
+    "enmap-sqlite": "2.0.3",
+    "node-schedule": "1.3.0"
+  }
+}
