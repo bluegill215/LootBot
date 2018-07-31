@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const path = require('path');
+const Enmap = require("enmap");
 const fs = require("fs");
 
 const client = new Discord.Client();
@@ -7,23 +7,33 @@ const config = require("./auth.json");
 
 client.config = config;
 
-const prefix = "$";
-
 client.on("ready", () => {
   console.log("Logged on and ready to distribute loot!!");
+  client.user.setActivity('you $mine for coins!', { type: 'WATCHING' });
 });
 
-client.on("message", (message) => {
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+/*! GET EVENTS **/
+fs.readdir("./events/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    const event = require(`./events/${file}`);
+    let eventName = file.split(".")[0];
+    client.on(eventName, event.bind(null, client));
+  });
+});
 
-  if(!message.author.username.startsWith("ste")) {
-  	message.channel.send("NO COINS FOR YOU!");
-    return;
-  }
+/*! GET COMMANDS **/
+client.commands = new Enmap();
 
-  if (message.content.startsWith(prefix+"coins")) {
-    message.channel.send("Here! Have some coins!");
-  }
+fs.readdir("./commands/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    if (!file.endsWith(".js")) return;
+    let props = require(`./commands/${file}`);
+    let commandName = file.split(".")[0];
+    console.log(`Attempting to load command ${commandName}`);
+    client.commands.set(commandName, props);
+  });
 });
 
 client.login(config.token);
